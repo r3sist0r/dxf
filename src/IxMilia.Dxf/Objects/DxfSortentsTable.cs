@@ -1,10 +1,29 @@
+using IxMilia.Dxf.Collections;
+using IxMilia.Dxf.Entities;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
 namespace IxMilia.Dxf.Objects
 {
     public partial class DxfSortentsTable
     {
+        public IList<Tuple<DxfEntity,uint>> EntitiesWithDrawOrder()
+        {
+            List<Tuple<DxfEntity, uint>> ret = new List<Tuple<DxfEntity, uint>>(SortItemsPointers.Count);
+            Debug.Assert(SortItemsPointers.Count == EntitiesPointers.Count);
+            for (int i=0; i<SortItemsPointers.Count; ++i)
+            {
+                DxfPointer ptr = SortItemsPointers.Pointers[i];
+                ret.Add(new Tuple<DxfEntity, uint>(EntitiesPointers[i], ptr.Handle));
+            }
+            return ret;
+        }
+
         internal override DxfObject PopulateFromBuffer(DxfCodePairBufferReader buffer)
         {
             var isReadyForSortHandles = false;
+            var ownerHandleRead = false;
             while (buffer.ItemsRemain)
             {
                 var pair = buffer.Peek();
@@ -35,8 +54,12 @@ namespace IxMilia.Dxf.Objects
                         isReadyForSortHandles = true;
                         break;
                     case 330:
-                        ((IDxfItemInternal)this).OwnerHandle = DxfCommonConverters.UIntHandle(pair.StringValue);
-                        isReadyForSortHandles = true;
+                        if (ownerHandleRead == false)
+                        {
+                            ((IDxfItemInternal)this).OwnerHandle = DxfCommonConverters.UIntHandle(pair.StringValue);
+                            ownerHandleRead = true;
+                            isReadyForSortHandles = true;
+                        }
                         break;
                     case 331:
                         EntitiesPointers.Pointers.Add(new DxfPointer(DxfCommonConverters.UIntHandle(pair.StringValue)));
