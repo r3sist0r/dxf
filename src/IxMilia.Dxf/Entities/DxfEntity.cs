@@ -268,6 +268,9 @@ namespace IxMilia.Dxf.Entities
             return DxfBoundingBox.FromPoints(GetExtentsPoints());
         }
 
+        public string HandleStr {
+            get { return ((IDxfItemInternal)this).Handle.ToString("X"); }
+        }
         public IEnumerable<DxfCodePair> GetValuePairs(DxfAcadVersion version, bool outputHandles)
         {
             var pairs = new List<DxfCodePair>();
