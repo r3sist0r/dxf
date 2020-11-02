@@ -310,6 +310,16 @@ namespace IxMilia.Dxf.Entities
                 {
                     // do nothing as TrySetExtensionData consumes as necessary
                 }
+                else if (pair.Code == 101)
+                {
+                    // Embedded Object
+                    // Skip it by advancing to next 0 pair.Code
+                    while(pair.Code != 0)
+                    {
+                        buffer.Advance();
+                        pair = buffer.Peek();
+                    }
+                }
                 else
                 {
                     // track it for later use and consume it
