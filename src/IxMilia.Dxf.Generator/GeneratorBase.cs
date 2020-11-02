@@ -391,7 +391,7 @@ namespace IxMilia.Dxf.Generator
                             }
 
                             AppendLine("default:");
-                            AppendLine($"    Debug.Assert(false, \"Unexpected extra values for code {code}\");");
+                            //AppendLine($"    Debug.Assert(false, \"Unexpected extra values for code {code}\");");
                             AppendLine("    break;");
                             DecreaseIndent();
                             AppendLine("}");

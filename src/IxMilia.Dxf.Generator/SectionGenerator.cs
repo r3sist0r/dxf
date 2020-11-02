@@ -235,7 +235,7 @@ namespace IxMilia.Dxf.Generator
                         }
 
                         AppendLine("default:");
-                        AppendLine($"    Debug.Assert(false, $\"Expected code [{string.Join(", ", propertyGroup.Select(p => Code(p)))}], got {{pair.Code}}\");");
+                        //AppendLine($"    Debug.Assert(false, $\"Expected code [{string.Join(", ", propertyGroup.Select(p => Code(p)))}], got {{pair.Code}}\");");
                         AppendLine("    break;");
                         DecreaseIndent();
                         AppendLine("}"); // end switch
